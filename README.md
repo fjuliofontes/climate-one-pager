@@ -4,11 +4,9 @@
 
 Pick a spot on a map, get twelve months of daily weather rendered as charts, measured against a ten-year normal so you can tell an ordinary year from a fluke. No build step, no dependencies to install, no API key, no backend.
 
-🔗 **[Live demo](https://example.pages.dev)**
+🔗 **[Live demo](https://climate-one-pager.fjuliofontes.workers.dev/)**
 
-<!-- Add a screenshot here once deployed:
-![Screenshot](docs/screenshot.png)
--->
+![Screenshot](screenshot.png)
 
 ---
 
