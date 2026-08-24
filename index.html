@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Climate one-pager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,500;1,300;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E7ECE9;
+    --paper-2:#DBE3E0;
+    --salt:#FAFBF9;
+    --ink:#0F3038;
+    --ink-70:rgba(15,48,56,.70);
+    --ink-45:rgba(15,48,56,.45);
+    --ink-20:rgba(15,48,56,.20);
+    --ink-10:rgba(15,48,56,.10);
+    --depth:#1B5C72;
+    --shallow:#79AEBD;
+    --sun:#DFA01C;
+    --ember:#A8431B;
+    --pine:#3F6046;
+    --rule:rgba(15,48,56,.16);
+
+    --sans:"IBM Plex Sans", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --serif:"Spectral", Georgia, "Times New Roman", serif;
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:15px;
+    line-height:1.5;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px 80px}
+
+  /* ---------- hydrographic type rule: water things are italic serif ---------- */
+  .hydro{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:.01em}
+
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-45);
+  }
+
+  /* ---------- masthead ---------- */
+  header{position:relative;padding:46px 0 26px;overflow:hidden}
+  .contours{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+  .masthead{position:relative}
+  h1{
+    font-family:var(--sans);
+    font-weight:600;
+    font-size:clamp(38px,7.4vw,74px);
+    line-height:.94;
+    letter-spacing:-.025em;
+    margin:12px 0 0;
+  }
+  h1 .place{display:block}
+  .subtitle{
+    font-family:var(--serif);font-style:italic;font-weight:300;
+    font-size:clamp(17px,2.4vw,23px);
+    color:var(--ink-70);margin:12px 0 0;max-width:44ch;
+  }
+  .coords{
+    margin-top:20px;display:flex;flex-wrap:wrap;gap:8px 22px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--ink-45);
+  }
+
+  /* ---------- sections ---------- */
+  section{margin-top:44px}
+  .sec-head{display:flex;align-items:baseline;gap:14px;border-top:1px solid var(--rule);padding-top:12px;margin-bottom:18px;flex-wrap:wrap}
+  .sec-head h2{
+    font-size:19px;font-weight:600;letter-spacing:-.01em;margin:0;
+  }
+  .sec-head h2.water{font-family:var(--serif);font-style:italic;font-weight:400;font-size:22px}
+  .sec-note{font-size:12.5px;color:var(--ink-45);margin-left:auto;max-width:40ch;text-align:right}
+
+  .card{background:var(--salt);border:1px solid var(--ink-10);border-radius:3px;padding:20px 22px}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+  .grid-wind{display:grid;grid-template-columns:1.55fr 1fr;gap:20px}
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--ink-10);border:1px solid var(--ink-10);border-radius:3px;overflow:hidden}
+  .stat{background:var(--salt);padding:16px 16px 14px}
+  .stat .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-45);display:block;min-height:26px}
+  .stat .v{font-family:var(--sans);font-weight:600;font-size:29px;letter-spacing:-.02em;line-height:1.1;display:block;margin-top:6px}
+  .stat .v small{font-size:15px;font-weight:500;color:var(--ink-70)}
+  .stat .d{font-family:var(--mono);font-size:11px;margin-top:5px;color:var(--ink-45)}
+  .stat .d.up{color:var(--ember)}
+  .stat .d.dn{color:var(--depth)}
+
+  /* ---------- legend ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-45);margin-top:14px}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .swatch{width:11px;height:11px;border-radius:2px;display:inline-block}
+
+  svg{display:block;width:100%;height:auto;overflow:visible}
+  text{font-family:var(--mono);fill:var(--ink-45)}
+  .lbl{font-size:10px;letter-spacing:.06em}
+  .lbl-m{font-family:var(--sans);font-size:11px;fill:var(--ink-70);font-weight:500}
+  .val{font-family:var(--sans);font-size:11px;font-weight:600;fill:var(--ink)}
+
+  /* ---------- verdict ---------- */
+  .read{columns:2;column-gap:34px;font-size:14.5px;line-height:1.62;color:var(--ink-70)}
+  .read p{margin:0 0 14px;break-inside:avoid}
+  .read strong{color:var(--ink);font-weight:600}
+  .read .flag{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ember);display:block;margin-bottom:2px}
+
+  footer{margin-top:52px;border-top:1px solid var(--rule);padding-top:16px;font-size:12.5px;color:var(--ink-45);display:flex;gap:28px;flex-wrap:wrap}
+  footer a{color:var(--depth)}
+
+  /* ---------- loading / error ---------- */
+  #status{padding:70px 0;text-align:center}
+  #status .msg{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--ink-70)}
+  #status .sub{font-family:var(--mono);font-size:12px;color:var(--ink-45);margin-top:12px}
+  .sounding{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--shallow);margin:0 3px;animation:tide 1.3s infinite ease-in-out}
+  .sounding:nth-child(2){animation-delay:.16s}
+  .sounding:nth-child(3){animation-delay:.32s}
+  @keyframes tide{0%,100%{transform:translateY(0);opacity:.35}50%{transform:translateY(-7px);opacity:1}}
+
+  .errbox{max-width:620px;margin:0 auto;text-align:left;background:var(--salt);border:1px solid var(--ink-20);border-radius:3px;padding:24px}
+  .errbox h3{margin:0 0 10px;font-size:16px}
+  .errbox p{font-size:14px;color:var(--ink-70);margin:0 0 12px}
+  .drop{border:1.5px dashed var(--ink-20);border-radius:3px;padding:22px;text-align:center;font-size:13.5px;color:var(--ink-45);cursor:pointer}
+  .drop:hover,.drop.over{border-color:var(--depth);color:var(--depth);background:rgba(27,92,114,.04)}
+
+  @media (max-width:820px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .grid-2,.grid-wind{grid-template-columns:1fr}
+    .read{columns:1}
+    .sec-note{margin-left:0;text-align:left;max-width:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+  /* ---------- setup screen ---------- */
+  #setup{max-width:620px;margin:0 auto;padding:56px 0 40px}
+  #setup h1{font-size:clamp(30px,5vw,44px);margin:10px 0 0}
+  #setup .subtitle{margin-bottom:30px}
+  .field{margin-bottom:20px}
+  .field label{display:block;font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-45);margin-bottom:7px}
+  .field input[type=text],
+  #mapsearch input{
+    width:100%;padding:11px 13px;font-family:var(--sans);font-size:15px;color:var(--ink);
+    background:var(--salt);border:1px solid var(--ink-20);border-radius:3px;
+    line-height:1.3;
+  }
+  .field input:focus,
+  #mapsearch input:focus{outline:none;border-color:var(--depth);box-shadow:0 0 0 3px rgba(27,92,114,.10)}
+  .hint{font-family:var(--mono);font-size:11px;color:var(--ink-45);margin-top:7px;line-height:1.5}
+  .hint.ok{color:var(--pine)}
+  .hint.bad{color:var(--ember)}
+
+  .btn{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    background:var(--salt);color:var(--ink-70);
+    border:1px solid var(--ink-20);border-radius:3px;padding:10px 15px;cursor:pointer;
+  }
+  .btn:hover{color:var(--depth);border-color:var(--depth)}
+  .btn:focus-visible{outline:2px solid var(--depth);outline-offset:2px}
+  .btn.primary{background:var(--depth);color:#fff;border-color:var(--depth)}
+  .btn.primary:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+  .btn[disabled]{opacity:.45;cursor:not-allowed}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:26px}
+
+  #mapwrap{margin-top:14px;display:none}
+  #mapwrap.on{display:block}
+  #map{height:330px;border:1px solid var(--ink-20);border-radius:3px;background:var(--paper-2)}
+  #mapsearch{display:flex;gap:8px;margin-bottom:10px;align-items:stretch}
+  #mapsearch input{flex:1;width:auto}
+  #mapsearch .btn{flex:0 0 auto}
+  .leaflet-container{font-family:var(--sans)}
+
+  .presets{margin-top:34px;border-top:1px solid var(--rule);padding-top:14px}
+  .presets .eyebrow{margin-bottom:9px}
+  .preset{
+    background:none;border:none;padding:4px 0;cursor:pointer;display:block;
+    font-family:var(--serif);font-style:italic;font-size:16px;color:var(--depth);text-align:left;
+  }
+  .preset:hover{color:var(--ink);text-decoration:underline}
+  .preset span{font-family:var(--mono);font-style:normal;font-size:10.5px;color:var(--ink-45);margin-left:9px}
+
+  /* ---------- save-as-pdf control ---------- */
+  #tools{
+    position:fixed;top:18px;right:18px;z-index:20;display:flex;gap:7px;
+  }
+  #tools .btn{box-shadow:0 1px 3px rgba(15,48,56,.08);font-size:10px;padding:8px 12px}
+
+  @media print{
+    @page{ size:A4 portrait; margin:11mm 10mm 10mm; }
+
+    /* force the chart colours through — Chrome and Safari honour this,
+       Firefox still needs "Print backgrounds" ticked in the dialog */
+    *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+
+    html,body{background:#fff;font-size:10.5px}
+    #tools{display:none}
+    .wrap{max-width:none;padding:0;margin:0}
+
+    header{padding:0 0 14px}
+    h1{font-size:46px}
+    .subtitle{font-size:14px;max-width:60ch}
+    .contours{opacity:.55}
+
+    section{margin-top:20px;break-inside:avoid}
+    .sec-head{padding-top:9px;margin-bottom:11px}
+    .sec-head h2{font-size:14.5px}
+    .sec-head h2.water{font-size:16px}
+    .sec-note{font-size:9.5px;max-width:46ch}
+
+    .card{padding:12px 13px;break-inside:avoid}
+    .stats{break-inside:avoid}
+    .stat{padding:11px 11px 9px}
+    .stat .v{font-size:21px}
+    .stat .k{min-height:22px;font-size:9px}
+
+    /* keep the paired panels side by side on the sheet */
+    .grid-2,.grid-wind{gap:12px}
+
+    /* deliberate pagination: hero on page 1, monthly charts on 2, the rest on 3 */
+    #s-temp{break-before:page;margin-top:0}
+    #s-wind{break-before:page;margin-top:0}
+    #s-read{break-before:auto}
+    .read{columns:2;column-gap:26px;font-size:10.5px;line-height:1.55}
+    .read p{break-inside:avoid}
+
+    footer{margin-top:18px;font-size:9.5px}
+    a{text-decoration:none;color:var(--depth)}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div id="setup" hidden>
+  <div class="eyebrow">Climate one-pager</div>
+  <h1>Choose a site</h1>
+  <p class="subtitle">Twelve months of weather for any point on earth, read against a ten-year normal.</p>
+
+  <div class="field">
+    <label for="f-name">What is this place called</label>
+    <input type="text" id="f-name" placeholder="Coimbra" autocomplete="off">
+  </div>
+
+  <div class="field">
+    <label for="f-coord">Coordinates</label>
+    <input type="text" id="f-coord" placeholder="40.202, -8.4088" autocomplete="off" spellcheck="false">
+    <div class="hint" id="coord-hint">Decimal or degrees–minutes–seconds both work. Paste straight from Google Maps.</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn" type="button" id="mapbtn">Pick on a map</button>
+    <button class="btn primary" type="button" id="go" disabled>Build the one-pager</button>
+  </div>
+
+  <div id="mapwrap">
+    <div id="mapsearch">
+      <input type="text" id="f-search" placeholder="Search a place name…" autocomplete="off">
+      <button class="btn" type="button" id="searchbtn">Search</button>
+    </div>
+    <div id="map"></div>
+    <div class="hint" id="map-hint">Click anywhere to drop a pin, or drag it.</div>
+  </div>
+
+  <div class="presets">
+    <div class="eyebrow">Or start from</div>
+    <button class="preset" type="button" data-lat="40.1533" data-lon="-8.8578" data-name="Figueira da Foz">Figueira da Foz<span>40.153, −8.858 · the coast</span></button>
+    <button class="preset" type="button" data-lat="40.2033" data-lon="-8.4103" data-name="Coimbra">Coimbra<span>40.203, −8.410 · inland comparison</span></button>
+    <button class="preset" type="button" data-lat="40.640" data-lon="-8.654" data-name="Aveiro">Aveiro<span>40.640, −8.654 · Aveiro</span></button>
+  </div>
+</div>
+
+<div id="status">
+  <div class="msg">Sounding the last twelve months…</div>
+  <div class="sub"><span class="sounding"></span><span class="sounding"></span><span class="sounding"></span></div>
+</div>
+
+<div id="page" hidden>
+
+  <div id="tools">
+    <button class="btn" type="button" id="relocate">Change site</button>
+    <button class="btn" type="button" id="copylink">Copy link</button>
+    <button class="btn" type="button" id="pdf">Save as PDF</button>
+  </div>
+
+  <header>
+    <svg class="contours" viewBox="0 0 1080 300" preserveAspectRatio="none" aria-hidden="true"></svg>
+    <div class="masthead">
+      <div class="eyebrow" id="hd-eyebrow">Climate one-pager</div>
+      <h1><span class="place" id="hd-name">—</span></h1>
+      <p class="subtitle">Twelve months of weather, read against a ten-year normal — so you can tell an ordinary year from a fluke.</p>
+      <div class="coords">
+        <span id="hd-coords">—</span>
+        <span id="hd-range">—</span>
+        <span id="hd-elev">—</span>
+      </div>
+    </div>
+  </header>
+
+  <section id="s-stats">
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <section id="s-ribbon">
+    <div class="sec-head">
+      <h2>The year, day by day</h2>
+      <div class="sec-note">Each column is one day: the band spans that day's low to its high. Rain hangs from the top.</div>
+    </div>
+    <div class="card">
+      <svg id="ribbon" viewBox="0 0 1000 330"></svg>
+      <div class="legend" id="ribbon-legend"></div>
+    </div>
+  </section>
+
+  <section id="s-temp">
+    <div class="sec-head">
+      <h2>Temperature by month</h2>
+      <div class="sec-note">Solid bar = average low to average high. Whisker = the most extreme day. Open ticks = the ten-year normal.</div>
+    </div>
+    <div class="card"><svg id="temp" viewBox="0 0 1000 330"></svg></div>
+  </section>
+
+  <section id="s-rain">
+    <div class="sec-head">
+      <h2 class="water">Rainfall &amp; wet days</h2>
+      <div class="sec-note">The shape of this chart matters more than the total — when the rain falls is what you live with.</div>
+    </div>
+    <div class="card"><svg id="rain" viewBox="0 0 1000 330"></svg></div>
+  </section>
+
+  <section id="s-hum">
+    <div class="grid-2">
+      <div>
+        <div class="sec-head"><h2 class="water">Humidity</h2></div>
+        <div class="card"><svg id="hum" viewBox="0 0 500 300"></svg></div>
+      </div>
+      <div>
+        <div class="sec-head"><h2>What the days felt like</h2></div>
+        <div class="card"><svg id="days" viewBox="0 0 500 300"></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="s-wind">
+    <div class="sec-head">
+      <h2>Wind</h2>
+      <div class="sec-note">If warm-season wind rivals cold-season wind, it's thermally driven — a sea breeze or valley wind that builds each afternoon.</div>
+    </div>
+    <div class="grid-wind">
+      <div class="card"><svg id="wind" viewBox="0 0 620 300"></svg></div>
+      <div class="card"><svg id="rose" viewBox="0 0 340 300"></svg></div>
+    </div>
+  </section>
+
+  <section id="s-read">
+    <div class="sec-head"><h2>Reading it</h2></div>
+    <div class="read" id="read"></div>
+  </section>
+
+  <footer>
+    <span>Data: Open-Meteo (ERA5 / ERA5-Land / ECMWF IFS reanalysis), CC BY 4.0</span>
+    <span id="ft-model">—</span>
+    <span id="ft-gen">—</span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ══════════════════════════════════════════ config ══ */
+let SITE = { lat:40.202, lon:-8.4088, name:"Coimbra" };
+const NORMAL_YEARS = 10;
+
+const DAILY_VARS = [
+  "temperature_2m_max","temperature_2m_min","temperature_2m_mean",
+  "precipitation_sum","relative_humidity_2m_mean",
+  "wind_speed_10m_max","wind_gusts_10m_max","wind_direction_10m_dominant"
+].join(",");
+
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/* ══════════════════════════════════════════ tiny utils ══ */
+const iso  = d => d.toISOString().slice(0,10);
+const num  = v => (v===null || v===undefined || Number.isNaN(v)) ? null : +v;
+const mean = a => a.length ? a.reduce((s,x)=>s+x,0)/a.length : null;
+const sum  = a => a.reduce((s,x)=>s+x,0);
+const esc  = s => String(s).replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+
+function quantile(arr,q){
+  if(!arr.length) return null;
+  const s=[...arr].sort((a,b)=>a-b), p=(s.length-1)*q, lo=Math.floor(p), hi=Math.ceil(p);
+  return lo===hi ? s[lo] : s[lo]+(s[hi]-s[lo])*(p-lo);
+}
+function fmt(v,d){ return v===null||v===undefined ? "–" : v.toFixed(d===undefined?1:d); }
+
+/* temperature → colour, a bathymetric-to-sunburnt ramp */
+const RAMP = [[2,"#1D5B70"],[10,"#5E98A9"],[16,"#A9BFA6"],[22,"#DFA01C"],[30,"#C4661C"],[38,"#8E2F12"]];
+function hex2rgb(h){ return [parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)]; }
+function tColor(t){
+  if(t<=RAMP[0][0]) return RAMP[0][1];
+  if(t>=RAMP[RAMP.length-1][0]) return RAMP[RAMP.length-1][1];
+  for(let i=0;i<RAMP.length-1;i++){
+    const [a,ca]=RAMP[i], [b,cb]=RAMP[i+1];
+    if(t>=a && t<=b){
+      const f=(t-a)/(b-a), A=hex2rgb(ca), B=hex2rgb(cb);
+      return "rgb("+A.map((v,j)=>Math.round(v+(B[j]-v)*f)).join(",")+")";
+    }
+  }
+  return RAMP[0][1];
+}
+
+/* svg string builder */
+function e(tag, attrs, inner){
+  let s = "<"+tag;
+  for(const k in attrs){
+    const v = attrs[k];
+    if(v===null||v===undefined||v===false) continue;
+    s += " "+k+'="'+String(v).replace(/"/g,"&quot;")+'"';
+  }
+  return inner===undefined || inner===null ? s+"/>" : s+">"+inner+"</"+tag+">";
+}
+const T = (x,y,txt,cls,anchor,extra) =>
+  e("text", Object.assign({x:x,y:y,class:cls||"lbl","text-anchor":anchor||"middle"}, extra||{}), esc(txt));
+
+/* ══════════════════════════════════════════ fetch ══ */
+async function jget(url){
+  const r = await fetch(url);
+  const j = await r.json().catch(()=>null);
+  if(j && j.error) throw new Error(j.reason || "API rejected the request");
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  return j;
+}
+function buildURL(host, path, params){
+  const u = new URL(host+path);
+  const base = { latitude:SITE.lat, longitude:SITE.lon, timezone:"auto", daily:DAILY_VARS,
+                 temperature_unit:"celsius", wind_speed_unit:"kmh", precipitation_unit:"mm" };
+  Object.entries(Object.assign(base, params)).forEach(([k,v]) => u.searchParams.set(k,v));
+  return u.toString();
+}
+function rowsFrom(payload){
+  if(!payload || !payload.daily) return [];
+  const d = payload.daily, out = [];
+  for(let i=0;i<d.time.length;i++){
+    const tmax=num(d.temperature_2m_max[i]), tmin=num(d.temperature_2m_min[i]);
+    if(tmax===null || tmin===null) continue;
+    out.push({
+      date:d.time[i], tmax:tmax, tmin:tmin,
+      tmean: num(d.temperature_2m_mean ? d.temperature_2m_mean[i] : null) ?? (tmax+tmin)/2,
+      prcp: num(d.precipitation_sum[i]) ?? 0,
+      rh:   num(d.relative_humidity_2m_mean ? d.relative_humidity_2m_mean[i] : null),
+      wmax: num(d.wind_speed_10m_max[i]),
+      gust: num(d.wind_gusts_10m_max ? d.wind_gusts_10m_max[i] : null),
+      wdir: num(d.wind_direction_10m_dominant ? d.wind_direction_10m_dominant[i] : null)
+    });
+  }
+  return out;
+}
+
+async function loadData(){
+  const today = new Date();
+  const start = new Date(today); start.setDate(start.getDate()-364);
+  const yEnd  = new Date(today); yEnd.setDate(yEnd.getDate()-1);
+
+  const nEnd   = new Date(today.getFullYear()-1, 11, 31);
+  const nStart = new Date(today.getFullYear()-NORMAL_YEARS, 0, 1);
+
+  const ARCH = "https://archive-api.open-meteo.com";
+  const FCST = "https://api.open-meteo.com";
+
+  /* the archive lags a few days on some models; the forecast endpoint's
+     past_days closes the gap right up to today */
+  const [archive, recent, normalRaw] = await Promise.all([
+    jget(buildURL(ARCH,"/v1/archive",{ start_date:iso(start), end_date:iso(yEnd) })),
+    jget(buildURL(FCST,"/v1/forecast",{ past_days:10, forecast_days:1 })).catch(()=>null),
+    jget(buildURL(ARCH,"/v1/archive",{ start_date:iso(nStart), end_date:iso(nEnd) })).catch(()=>null)
+  ]);
+
+  const seen = new Map();
+  rowsFrom(archive).forEach(r => seen.set(r.date, r));
+  rowsFrom(recent).forEach(r => { if(!seen.has(r.date)) seen.set(r.date, r); });
+
+  const cut = iso(start), end = iso(today);
+  const days = [...seen.values()]
+    .filter(r => r.date >= cut && r.date <= end)
+    .sort((a,b) => a.date < b.date ? -1 : 1);
+
+  if(days.length < 60) throw new Error("Only "+days.length+" days came back — the API returned an incomplete series.");
+
+  return {
+    days: days,
+    normals: buildNormals(rowsFrom(normalRaw)),
+    elevation: archive.elevation,
+    timezone: archive.timezone || null,
+    tzAbbr: archive.timezone_abbreviation || null
+  };
+}
+
+/* ten-year monthly normals, keyed by calendar month 0-11 */
+function buildNormals(rows){
+  if(!rows.length) return null;
+  const byM = Array.from({length:12},()=>({tmax:[],tmin:[],rh:[],wmax:[],prcpByYear:{}}));
+  rows.forEach(r=>{
+    const m = +r.date.slice(5,7)-1, y = r.date.slice(0,4), b = byM[m];
+    b.tmax.push(r.tmax); b.tmin.push(r.tmin);
+    if(r.rh!==null) b.rh.push(r.rh);
+    if(r.wmax!==null) b.wmax.push(r.wmax);
+    b.prcpByYear[y] = (b.prcpByYear[y]||0) + r.prcp;
+  });
+  return byM.map(b=>({
+    tmax: mean(b.tmax), tmin: mean(b.tmin),
+    rh: mean(b.rh), wmax: mean(b.wmax),
+    prcp: mean(Object.values(b.prcpByYear))
+  }));
+}
+
+/* group the 12-month window into ordered month buckets */
+function byMonth(days){
+  const out = [], idx = new Map();
+  days.forEach(r=>{
+    const key = r.date.slice(0,7);
+    if(!idx.has(key)){
+      idx.set(key, out.length);
+      out.push({ key:key, y:+key.slice(0,4), m:+key.slice(5,7)-1, rows:[] });
+    }
+    out[idx.get(key)].rows.push(r);
+  });
+  const now = new Date();
+  return out.map(b=>{
+    const R = b.rows;
+    const daysInMonth = new Date(b.y, b.m+1, 0).getDate();
+    return Object.assign(b,{
+      label: MON[b.m],
+      partial: R.length < daysInMonth,
+      coverage: R.length/daysInMonth,
+      tmaxAvg: mean(R.map(r=>r.tmax)),
+      tminAvg: mean(R.map(r=>r.tmin)),
+      tmaxAbs: Math.max(...R.map(r=>r.tmax)),
+      tminAbs: Math.min(...R.map(r=>r.tmin)),
+      prcp: sum(R.map(r=>r.prcp)),
+      wet: R.filter(r=>r.prcp>=1).length,
+      rh: mean(R.filter(r=>r.rh!==null).map(r=>r.rh)),
+      rhLo: quantile(R.filter(r=>r.rh!==null).map(r=>r.rh), .1),
+      rhHi: quantile(R.filter(r=>r.rh!==null).map(r=>r.rh), .9),
+      wmax: mean(R.filter(r=>r.wmax!==null).map(r=>r.wmax)),
+      gust: R.some(r=>r.gust!==null) ? Math.max(...R.filter(r=>r.gust!==null).map(r=>r.gust)) : null
+    });
+  });
+}
+
+/* ══════════════════════════════════════════ masthead contours ══ */
+function drawContours(){
+  const svg = document.querySelector(".contours");
+  let s = "";
+  for(let i=0;i<6;i++){
+    const y = 40 + i*38, amp = 12 + i*3;
+    let d = "M -20 "+y;
+    for(let x=0;x<=1120;x+=40){
+      d += " Q "+(x+20)+" "+(y + (x/40%2?amp:-amp))+" "+(x+40)+" "+y;
+    }
+    s += e("path",{d:d,fill:"none",stroke:"var(--shallow)","stroke-width":i===2?1.1:0.7,opacity:0.16+i*0.03});
+  }
+  for(let i=0;i<26;i++){
+    s += e("circle",{cx:30+i*41,cy:22+((i*67)%250),r:1.3,fill:"var(--depth)",opacity:.16});
+  }
+  svg.innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ hero ribbon ══ */
+function drawRibbon(days, months){
+  const W=1000,H=330, L=42,R=16,Tp=58,B=34;
+  const iw=W-L-R, ih=H-Tp-B;
+  const rainH = 76;                       // rain hangs in the top band
+  const tArea = ih - rainH - 10;
+
+  const lo = Math.floor(Math.min(...days.map(d=>d.tmin))-1);
+  const hi = Math.ceil (Math.max(...days.map(d=>d.tmax))+1);
+  const pMax = Math.max(10, Math.ceil(Math.max(...days.map(d=>d.prcp))/5)*5);
+
+  const x  = i => L + (i+0.5)*(iw/days.length);
+  const yT = t => Tp + rainH + 10 + tArea - ((t-lo)/(hi-lo))*tArea;
+  const yP = p => Tp + (p/pMax)*rainH;
+
+  let s = "";
+
+  /* gradient keyed to the temperature axis so cold reads blue, hot reads ember */
+  let stops = "";
+  for(let k=0;k<=10;k++){
+    const t = hi - (hi-lo)*(k/10);
+    stops += e("stop",{offset:(k*10)+"%","stop-color":tColor(t)});
+  }
+  s += e("defs",{}, e("linearGradient",{id:"tgrad",x1:0,y1:0,x2:0,y2:1}, stops));
+
+  /* temperature gridlines */
+  const step = (hi-lo)>28 ? 10 : 5;
+  for(let t=Math.ceil(lo/step)*step; t<=hi; t+=step){
+    s += e("line",{x1:L,x2:W-R,y1:yT(t),y2:yT(t),stroke:"var(--ink-10)","stroke-width":1});
+    s += T(L-8, yT(t)+3.5, t+"°", "lbl", "end");
+  }
+
+  /* month separators + labels */
+  let acc = 0;
+  months.forEach(b=>{
+    const x0 = L + acc*(iw/days.length);
+    s += e("line",{x1:x0,x2:x0,y1:Tp,y2:H-B,stroke:"var(--ink-10)","stroke-width":1});
+    const xm = x0 + (b.rows.length/2)*(iw/days.length);
+    s += T(xm, H-B+18, b.label + (b.partial?"*":""), "lbl-m");
+    acc += b.rows.length;
+  });
+
+  /* the envelope */
+  let up="", dn="";
+  days.forEach((d,i)=>{ up += (i?" L ":"M ")+x(i)+" "+yT(d.tmax); });
+  for(let i=days.length-1;i>=0;i--){ dn += " L "+x(i)+" "+yT(days[i].tmin); }
+  s += e("path",{d:up+dn+" Z", fill:"url(#tgrad)", opacity:.85});
+  s += e("path",{d:up, fill:"none", stroke:"rgba(15,48,56,.28)","stroke-width":.7});
+
+  /* rain, hanging */
+  const bw = Math.max(1.1, iw/days.length - 0.6);
+  days.forEach((d,i)=>{
+    if(d.prcp<=0) return;
+    s += e("rect",{x:x(i)-bw/2, y:Tp, width:bw, height:Math.max(1,yP(Math.min(d.prcp,pMax))-Tp),
+                   fill:"var(--depth)", opacity:.62});
+  });
+  s += e("line",{x1:L,x2:W-R,y1:Tp,y2:Tp,stroke:"var(--ink-20)","stroke-width":1});
+  s += T(L-8, Tp+4, "0", "lbl", "end");
+  s += T(L-8, Tp+rainH+4, pMax+"mm", "lbl", "end");
+  s += T(L, Tp-12, "DAILY RAINFALL", "lbl", "start", {"letter-spacing":".12em"});
+
+  document.getElementById("ribbon").innerHTML = s;
+
+  document.getElementById("ribbon-legend").innerHTML =
+    [[RAMP[0][1],"cold"],[RAMP[2][1],"mild"],[RAMP[3][1],"warm"],[RAMP[4][1],"hot"]]
+      .map(([c,l])=>'<span><i class="swatch" style="background:'+c+'"></i>'+l+'</span>').join("") +
+    '<span><i class="swatch" style="background:var(--depth);opacity:.62"></i>rainfall</span>' +
+    (months.some(b=>b.partial) ? '<span>* partial month</span>' : "");
+}
+
+/* ══════════════════════════════════════════ monthly temperature ══ */
+function drawTemp(months, normals){
+  const W=1000,H=330, L=46,R=16,Tp=24,B=52;
+  const iw=W-L-R, ih=H-Tp-B;
+  const lo = Math.floor(Math.min(...months.map(b=>b.tminAbs))-2);
+  const hi = Math.ceil (Math.max(...months.map(b=>b.tmaxAbs))+2);
+  const y = t => Tp + ih - ((t-lo)/(hi-lo))*ih;
+  const slot = iw/months.length, bw = Math.min(34, slot*.42);
+
+  let s = "";
+  for(let t=Math.ceil(lo/5)*5; t<=hi; t+=5){
+    s += e("line",{x1:L,x2:W-R,y1:y(t),y2:y(t),stroke:"var(--ink-10)"});
+    s += T(L-9, y(t)+3.5, t+"°", "lbl", "end");
+  }
+  /* comfort band 18–26 °C */
+  s += e("rect",{x:L,y:y(26),width:iw,height:y(18)-y(26),fill:"var(--pine)",opacity:.07});
+  s += T(W-R-4, y(26)-5, "COMFORT BAND 18–26°", "lbl", "end", {"letter-spacing":".1em"});
+
+  months.forEach((b,i)=>{
+    const cx = L + slot*(i+.5);
+    const n  = normals ? normals[b.m] : null;
+
+    s += e("line",{x1:cx,x2:cx,y1:y(b.tmaxAbs),y2:y(b.tminAbs),stroke:"var(--ink-20)","stroke-width":1});
+    s += e("line",{x1:cx-5,x2:cx+5,y1:y(b.tmaxAbs),y2:y(b.tmaxAbs),stroke:"var(--ink-20)","stroke-width":1});
+    s += e("line",{x1:cx-5,x2:cx+5,y1:y(b.tminAbs),y2:y(b.tminAbs),stroke:"var(--ink-20)","stroke-width":1});
+
+    const gid = "g"+i;
+    s += e("defs",{}, e("linearGradient",{id:gid,x1:0,y1:0,x2:0,y2:1},
+            e("stop",{offset:"0%","stop-color":tColor(b.tmaxAvg)}) +
+            e("stop",{offset:"100%","stop-color":tColor(b.tminAvg)})));
+    s += e("rect",{x:cx-bw/2, y:y(b.tmaxAvg), width:bw, height:Math.max(2,y(b.tminAvg)-y(b.tmaxAvg)),
+                   rx:2, fill:"url(#"+gid+")"});
+
+    if(n){
+      [n.tmax,n.tmin].forEach(v=>{
+        s += e("line",{x1:cx-bw/2-7,x2:cx+bw/2+7,y1:y(v),y2:y(v),
+                       stroke:"var(--ink)","stroke-width":1.1,"stroke-dasharray":"3 2.5",opacity:.55});
+      });
+    }
+    s += T(cx, y(b.tmaxAvg)-9, fmt(b.tmaxAvg,0)+"°", "val");
+    s += T(cx, y(b.tminAvg)+15, fmt(b.tminAvg,0)+"°", "val", "middle", {opacity:.62});
+    s += T(cx, H-B+20, b.label + (b.partial?"*":""), "lbl-m");
+    s += T(cx, H-B+34, b.y, "lbl", "middle", {opacity:.55});
+  });
+
+  s += e("line",{x1:L,x2:W-R,y1:Tp+ih,y2:Tp+ih,stroke:"var(--ink-20)"});
+  document.getElementById("temp").innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ rainfall ══ */
+function drawRain(months, normals){
+  const W=1000,H=330, L=52,R=52,Tp=28,B=62;
+  const iw=W-L-R, ih=H-Tp-B;
+  const maxP = Math.max(...months.map(b=>b.prcp), normals?Math.max(...normals.map(n=>n.prcp)):0);
+  const pMax = Math.ceil(maxP/25)*25 || 50;
+  const y = p => Tp + ih - (p/pMax)*ih;
+  const slot = iw/months.length, bw = Math.min(44, slot*.5);
+  const maxWet = 31, yW = w => Tp + ih - (w/maxWet)*ih;
+
+  let s = "";
+  for(let p=0;p<=pMax;p+=Math.max(25,Math.round(pMax/5/25)*25)){
+    s += e("line",{x1:L,x2:W-R,y1:y(p),y2:y(p),stroke:"var(--ink-10)"});
+    s += T(L-9, y(p)+3.5, p, "lbl", "end");
+  }
+  s += T(L-9, Tp-12, "mm", "lbl", "end");
+  s += T(W-R+9, Tp-12, "days", "lbl", "start");
+  [0,10,20,30].forEach(w=>{ s += T(W-R+9, yW(w)+3.5, w, "lbl", "start", {opacity:.6}); });
+
+  months.forEach((b,i)=>{
+    const cx = L + slot*(i+.5);
+    const n = normals ? normals[b.m] : null;
+    if(n){
+      s += e("rect",{x:cx-bw/2-6, y:y(n.prcp), width:bw+12, height:Math.max(1,ih+Tp-y(n.prcp)),
+                     fill:"none", stroke:"var(--ink-20)","stroke-width":1,"stroke-dasharray":"3 2.5"});
+    }
+    s += e("rect",{x:cx-bw/2, y:y(b.prcp), width:bw, height:Math.max(1.5,ih+Tp-y(b.prcp)),
+                   rx:2, fill:"var(--depth)", opacity: b.partial?.45:.86});
+    s += T(cx, y(b.prcp)-8, Math.round(b.prcp), "val");
+    s += T(cx, H-B+20, b.label + (b.partial?"*":""), "lbl-m");
+  });
+
+  /* wet-day line, on the right axis */
+  let path = "";
+  months.forEach((b,i)=>{ path += (i?" L ":"M ")+(L+slot*(i+.5))+" "+yW(b.wet); });
+  s += e("path",{d:path,fill:"none",stroke:"var(--sun)","stroke-width":2,"stroke-linejoin":"round"});
+  months.forEach((b,i)=>{
+    s += e("circle",{cx:L+slot*(i+.5),cy:yW(b.wet),r:3.2,fill:"var(--salt)",stroke:"var(--sun)","stroke-width":1.8});
+  });
+
+  s += e("line",{x1:L,x2:W-R,y1:Tp+ih,y2:Tp+ih,stroke:"var(--ink-20)"});
+  s += T(L, H-B+42, "▬ rainfall this year   ⌐ ten-year normal   ● days with ≥1 mm", "lbl", "start", {"letter-spacing":".08em"});
+  document.getElementById("rain").innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ humidity ══ */
+function drawHum(months){
+  const W=500,H=300, L=38,R=14,Tp=22,B=44;
+  const iw=W-L-R, ih=H-Tp-B;
+  const lo=40, hi=100, y = v => Tp + ih - ((v-lo)/(hi-lo))*ih;
+  const x = i => L + (iw/(months.length-1))*i;
+
+  let s = "";
+  [50,60,70,80,90,100].forEach(v=>{
+    s += e("line",{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:"var(--ink-10)"});
+    s += T(L-8, y(v)+3.5, v+"%", "lbl", "end");
+  });
+
+  const ok = months.filter(b=>b.rh!==null);
+  if(ok.length>1){
+    let up="",dn="";
+    months.forEach((b,i)=>{ if(b.rhHi!==null) up += (up?" L ":"M ")+x(i)+" "+y(b.rhHi); });
+    for(let i=months.length-1;i>=0;i--){ if(months[i].rhLo!==null) dn += " L "+x(i)+" "+y(months[i].rhLo); }
+    s += e("path",{d:up+dn+" Z", fill:"var(--shallow)", opacity:.3});
+    let line="";
+    months.forEach((b,i)=>{ if(b.rh!==null) line += (line?" L ":"M ")+x(i)+" "+y(b.rh); });
+    s += e("path",{d:line,fill:"none",stroke:"var(--depth)","stroke-width":2.2,"stroke-linejoin":"round"});
+    months.forEach((b,i)=>{
+      if(b.rh===null) return;
+      s += e("circle",{cx:x(i),cy:y(b.rh),r:2.8,fill:"var(--depth)"});
+      if(i%2===0) s += T(x(i), y(b.rh)-10, Math.round(b.rh)+"", "val");
+    });
+  } else {
+    s += T(W/2, H/2, "humidity unavailable for this range", "lbl");
+  }
+  months.forEach((b,i)=>{ if(i%2===0) s += T(x(i), H-B+20, b.label, "lbl-m"); });
+  s += T(L, H-B+38, "monthly mean, shaded 10th–90th percentile of days", "lbl", "start");
+  document.getElementById("hum").innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ day types ══ */
+const BUCKETS = [
+  {k:"cool",  lab:"under 16°", c:"#6E9FB2", t:d=>d.tmax<16},
+  {k:"mild",  lab:"16–22°",    c:"#A9BFA6", t:d=>d.tmax>=16&&d.tmax<22},
+  {k:"warm",  lab:"22–27°",    c:"#DFA01C", t:d=>d.tmax>=22&&d.tmax<27},
+  {k:"hot",   lab:"27°+",      c:"#C4661C", t:d=>d.tmax>=27}
+];
+function drawDays(months){
+  const W=500,H=300, L=38,R=16,Tp=22,B=56;
+  const iw=W-L-R, ih=H-Tp-B;
+  const slot = ih/months.length, bh = Math.min(15, slot*.62);
+
+  let s = "";
+  months.forEach((b,i)=>{
+    const yb = Tp + slot*i + (slot-bh)/2;
+    const n = b.rows.length;
+    let xc = L;
+    BUCKETS.forEach(k=>{
+      const c = b.rows.filter(k.t).length;
+      if(!c) return;
+      const w = (c/n)*iw;
+      s += e("rect",{x:xc,y:yb,width:w,height:bh,fill:k.c,opacity:.9});
+      if(w>26) s += T(xc+w/2, yb+bh-4, c, "val", "middle", {fill:"#fff","font-size":"10"});
+      xc += w;
+    });
+    /* wet-day overlay: a hatch of depth colour along the bottom edge */
+    const wetW = (b.wet/n)*iw;
+    s += e("rect",{x:L,y:yb+bh+2,width:wetW,height:2.5,fill:"var(--depth)",opacity:.75});
+    s += T(L-8, yb+bh-2.5, b.label, "lbl-m", "end");
+  });
+
+  s += T(L, H-B+22, "share of days by afternoon high", "lbl", "start");
+  s += T(L, H-B+38, "▬ blue rule = share of days with ≥1 mm rain", "lbl", "start");
+  let lx = L;
+  BUCKETS.forEach(k=>{
+    s += e("rect",{x:lx,y:H-B+46,width:9,height:9,fill:k.c,rx:2});
+    s += T(lx+13, H-B+54, k.lab, "lbl", "start");
+    lx += 26 + k.lab.length*5.6;
+  });
+  document.getElementById("days").innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ wind ══ */
+function drawWind(months, normals){
+  const W=620,H=300, L=44,R=16,Tp=26,B=48;
+  const iw=W-L-R, ih=H-Tp-B;
+  const gusts = months.filter(b=>b.gust!==null).map(b=>b.gust);
+  const hi = Math.ceil(Math.max(...months.map(b=>b.wmax||0), ...(gusts.length?gusts:[0]))/10)*10;
+  const y = v => Tp + ih - (v/hi)*ih;
+  const slot = iw/months.length, bw = Math.min(26, slot*.46);
+
+  let s = "";
+  for(let v=0;v<=hi;v+=Math.max(10,Math.round(hi/5/10)*10)){
+    s += e("line",{x1:L,x2:W-R,y1:y(v),y2:y(v),stroke:"var(--ink-10)"});
+    s += T(L-8, y(v)+3.5, v, "lbl", "end");
+  }
+  s += T(L-8, Tp-12, "km/h", "lbl", "end");
+
+  months.forEach((b,i)=>{
+    const cx = L + slot*(i+.5);
+    if(b.gust!==null){
+      s += e("line",{x1:cx,x2:cx,y1:y(b.gust),y2:Tp+ih,stroke:"var(--ink-20)","stroke-width":1});
+      s += e("line",{x1:cx-4,x2:cx+4,y1:y(b.gust),y2:y(b.gust),stroke:"var(--ink-20)","stroke-width":1});
+    }
+    s += e("rect",{x:cx-bw/2,y:y(b.wmax),width:bw,height:Math.max(1.5,Tp+ih-y(b.wmax)),rx:2,
+                   fill:"var(--pine)",opacity:.82});
+    if(normals) s += e("line",{x1:cx-bw/2-5,x2:cx+bw/2+5,y1:y(normals[b.m].wmax),y2:y(normals[b.m].wmax),
+                   stroke:"var(--ink)","stroke-width":1,"stroke-dasharray":"3 2.5",opacity:.5});
+    s += T(cx, H-B+20, b.label, "lbl-m");
+  });
+  s += e("line",{x1:L,x2:W-R,y1:Tp+ih,y2:Tp+ih,stroke:"var(--ink-20)"});
+  s += T(L, H-B+38, "bar = average daily peak   ⌶ = strongest gust   ⌐ = ten-year normal", "lbl", "start");
+  document.getElementById("wind").innerHTML = s;
+}
+
+function drawRose(days){
+  const W=340,H=300, cx=150, cy=142, rMax=105;
+  const N = 16, sect = Array.from({length:N},()=>({n:0,spd:[]}));
+  days.forEach(d=>{
+    if(d.wdir===null||d.wmax===null) return;
+    const i = Math.round(d.wdir/(360/N)) % N;
+    sect[i].n++; sect[i].spd.push(d.wmax);
+  });
+  const total = sum(sect.map(s=>s.n)) || 1;
+  const maxF = Math.max(...sect.map(s=>s.n/total));
+  const allSpd = days.filter(d=>d.wmax!==null).map(d=>d.wmax);
+  const sLo = quantile(allSpd,.1), sHi = quantile(allSpd,.9);
+
+  let s = "";
+  [.25,.5,.75,1].forEach(f=>{
+    s += e("circle",{cx:cx,cy:cy,r:rMax*f,fill:"none",stroke:"var(--ink-10)"});
+  });
+  ["N","E","S","W"].forEach((lab,i)=>{
+    const a = i*Math.PI/2 - Math.PI/2;
+    s += e("line",{x1:cx,y1:cy,x2:cx+Math.cos(a)*rMax,y2:cy+Math.sin(a)*rMax,stroke:"var(--ink-10)"});
+    s += T(cx+Math.cos(a)*(rMax+15), cy+Math.sin(a)*(rMax+15)+3.5, lab, "lbl-m");
+  });
+
+  const half = Math.PI/N;
+  sect.forEach((sc,i)=>{
+    if(!sc.n) return;
+    const r = ((sc.n/total)/maxF)*rMax;
+    const a = i*(2*Math.PI/N) - Math.PI/2;
+    const a0=a-half, a1=a+half;
+    const p = [cx,cy,
+      cx+Math.cos(a0)*r, cy+Math.sin(a0)*r,
+      cx+Math.cos(a1)*r, cy+Math.sin(a1)*r];
+    const d = "M "+p[0]+" "+p[1]+" L "+p[2]+" "+p[3]+" A "+r+" "+r+" 0 0 1 "+p[4]+" "+p[5]+" Z";
+    const sp = mean(sc.spd);
+    const f = Math.max(0, Math.min(1, (sp-sLo)/((sHi-sLo)||1)));
+    s += e("path",{d:d, fill:"var(--pine)", opacity:.25+f*.6, stroke:"var(--salt)","stroke-width":.8});
+  });
+
+  s += T(cx, H-34, "where the wind came from, by day", "lbl");
+  s += T(cx, H-18, "petal length = frequency · shade = strength", "lbl");
+  document.getElementById("rose").innerHTML = s;
+}
+
+/* ══════════════════════════════════════════ stats + prose ══ */
+function drawStats(days, months, normals){
+  const tmean = mean(days.map(d=>d.tmean));
+  const totalRain = sum(days.map(d=>d.prcp));
+  const wet = days.filter(d=>d.prcp>=1).length;
+  const hot = days.filter(d=>d.tmax>=25).length;
+  const frost = days.filter(d=>d.tmin<=0).length;
+  const rh = mean(days.filter(d=>d.rh!==null).map(d=>d.rh));
+
+  let nTmean=null, nRain=null;
+  if(normals){
+    nTmean = mean(normals.map(n=>(n.tmax+n.tmin)/2));
+    nRain  = sum(normals.map(n=>n.prcp));
+  }
+  const delta = (v,n,unit,dp) => {
+    if(n===null) return "";
+    const d = v-n, eps = Math.pow(10,-(dp===undefined?1:dp))/2;
+    if(Math.abs(d) < eps) return '<span class="d">level with the normal</span>';
+    const cls = d>0 ? "up" : "dn";
+    return '<span class="d '+cls+'">'+(d>0?"+":"−")+fmt(Math.abs(d),dp)+unit+" vs normal</span>";
+  };
+
+  const hottest = days.reduce((a,b)=>b.tmax>a.tmax?b:a);
+  const coldest = days.reduce((a,b)=>b.tmin<a.tmin?b:a);
+
+  const cards = [
+    {k:"Mean temperature", v:fmt(tmean,1)+"<small>°C</small>", d:delta(tmean,nTmean,"°",1)},
+    {k:"Range across the year", v:fmt(coldest.tmin,0)+"<small>° to </small>"+fmt(hottest.tmax,0)+"<small>°</small>",
+     d:'<span class="d">'+frost+" days at or below 0°</span>"},
+    {k:"Total rainfall", v:Math.round(totalRain)+"<small>mm</small>", d:delta(totalRain,nRain,"mm",0)},
+    {k:"Days with ≥1 mm rain", v:wet+'<small> / '+days.length+"</small>",
+     d:'<span class="d">'+Math.round(wet/days.length*100)+"% of days</span>"},
+    {k:"Days above 25 °C", v:hot+"", d:'<span class="d">mean humidity '+fmt(rh,0)+"%</span>"}
+  ];
+  document.getElementById("stats").innerHTML = cards.map(c =>
+    '<div class="stat"><span class="k">'+c.k+'</span><span class="v">'+c.v+"</span>"+c.d+"</div>").join("");
+
+  return {tmean,totalRain,wet,hot,frost,rh,hottest,coldest,nTmean,nRain};
+}
+
+function writeRead(days, months, S, normals){
+  /* Everything here is derived from the data, never from the calendar —
+     so it reads correctly in either hemisphere and at any latitude.
+     A 12-month window clips a month at each end, and those partial buckets
+     would otherwise masquerade as the driest or coolest month. */
+  const full = months.filter(b => b.coverage >= 0.85);
+  const pool = full.length >= 6 ? full : months;
+
+  const byWarm = [...pool].sort((a,b) => b.tmaxAvg - a.tmaxAvg);
+  const warm = byWarm.slice(0,3);
+  const cool = byWarm.slice(-3);
+  const warmHigh = mean(warm.map(b => b.tmaxAvg));
+  const coolLow  = mean(cool.map(b => b.tminAvg));
+  const swing = warmHigh - coolLow;
+
+  const span = set => [...new Set([...set].sort((a,b) => a.m - b.m).map(b => b.label))].join(", ");
+
+  const byRain = [...pool].sort((a,b) => b.prcp - a.prcp);
+  const wettest = byRain[0], driest = byRain[byRain.length-1];
+  const wetHalf = byRain.slice(0,6).reduce((s,b) => s + b.prcp, 0);
+  const poolRain = sum(pool.map(b => b.prcp));
+  const rainShare = poolRain ? Math.round(wetHalf / poolRain * 100) : 0;
+  const warmRain = sum(warm.map(b => b.prcp));
+
+  const windAvg = mean(pool.map(b => b.wmax));
+  const windiest = pool.reduce((a,b) => (b.wmax||0) > (a.wmax||0) ? b : a);
+  const warmWind = mean(warm.map(b => b.wmax));
+  const coolWind = mean(cool.map(b => b.wmax));
+  const thermal = warmWind > coolWind * 0.85;
+
+  const hot30 = days.filter(d => d.tmax >= 30).length;
+  const comfort = days.filter(d => d.tmax >= 18 && d.tmax <= 26).length;
+  const typical = (S.nTmean === null) ? null
+    : Math.abs(S.tmean - S.nTmean) < 0.6 && Math.abs(S.totalRain - S.nRain) / S.nRain < 0.2;
+
+  const P = [];
+
+  P.push("<p><strong>" +
+    (swing < 15 ? "A narrow annual swing — this is a maritime climate."
+     : swing < 25 ? "A moderate annual swing, neither extreme nor especially even."
+     : "A wide annual swing — the hallmark of a continental or high-altitude site.") +
+    "</strong> The warmest months (" + span(warm) + ") averaged " + fmt(warmHigh,1) +
+    "°C by afternoon; the coolest (" + span(cool) + ") averaged " + fmt(coolLow,1) +
+    "°C overnight, a " + fmt(swing,0) + "-degree gap. " +
+    (S.frost === 0 ? "Nothing froze all year. " : S.frost + " nights reached freezing or below. ") +
+    S.hot + " days cleared 25°C" + (hot30 ? " and " + hot30 + " cleared 30°C" : "") +
+    ". " + comfort + " days — " + Math.round(comfort/days.length*100) +
+    "% of the year — had an afternoon high in the 18–26°C comfort band.</p>");
+
+  P.push("<p><strong>" +
+    (rainShare > 75 ? "Rain here is strongly seasonal, and that's the part to plan around."
+     : rainShare > 62 ? "Rain leans towards one half of the year."
+     : "Rain is spread fairly evenly through the year.") +
+    "</strong> " + Math.round(S.totalRain) + " mm fell across the year, and the six wettest complete months carried " +
+    rainShare + "% of it. " + wettest.label + " was the wettest at " +
+    Math.round(wettest.prcp) + " mm; " + driest.label + " the driest at " +
+    Math.round(driest.prcp) + " mm. " +
+    (warmRain < 60 ? "The warm season was close to dry, at " + Math.round(warmRain) + " mm across its three months. "
+                   : "Even the warm season saw " + Math.round(warmRain) + " mm. ") +
+    "For daily life, wet days matter more than millimetres: " + S.wet + " days saw at least 1 mm, about " +
+    Math.round(S.wet/days.length*100) + "% of the calendar" +
+    (S.rh !== null ? ", with mean relative humidity at " + fmt(S.rh,0) + "%" +
+      (S.rh >= 75 ? " — high enough that damp and winter condensation are a real consideration in any building here." : ".")
+     : ".") + "</p>");
+
+  P.push("<p><strong>" +
+    (windAvg >= 35 ? "This is a windy site." : windAvg >= 22 ? "Wind is a moderate but persistent presence." : "Wind is relatively light.") +
+    "</strong> Daily peaks averaged " + fmt(windAvg,0) + " km/h across the year, strongest in " +
+    windiest.label + " at " + fmt(windiest.wmax,0) + " km/h" +
+    (windiest.gust !== null ? ", with the year's hardest gust at " + fmt(windiest.gust,0) + " km/h" : "") + ". " +
+    (thermal
+      ? "Warm-season wind nearly matches cold-season wind, which is the signature of a thermally driven local wind — a sea breeze or valley wind that builds through the afternoon rather than arriving with a storm. Expect calm mornings and blustery afternoons, and treat shelter and orientation as worth paying for."
+      : "Cold-season peaks dominate, so the strongest wind arrives with weather systems rather than with the daily heating cycle. Summer outdoor space is likely to be usable most days.") +
+    " The rose shows how concentrated the direction is — a tight cluster means you can plan shelter for one bearing.</p>");
+
+  if(typical === true){
+    P.push("<p><span class='flag'>Sample check</span><strong>This was a fairly ordinary year.</strong> Both mean temperature and total rainfall landed close to the ten-year normal, so what you see above is reasonably representative rather than a freak year.</p>");
+  } else if(typical === false){
+    const dT = S.tmean - S.nTmean, dR = S.totalRain - S.nRain;
+    P.push("<p><span class='flag'>Sample check</span><strong>This year departed from the norm.</strong> Mean temperature came in " +
+      fmt(Math.abs(dT),1) + "°C " + (dT>0 ? "above" : "below") + " the ten-year average and rainfall " +
+      fmt(Math.abs(dR),0) + " mm " + (dR>0 ? "above" : "below") +
+      " it. Weight the dashed normal markers over the bars when judging what a typical year looks like here.</p>");
+  } else {
+    P.push("<p><span class='flag'>Sample check</span>The ten-year normals didn't load, so there's nothing here to tell you whether this particular year was typical. One year on its own is a weak sample — reload to try again before drawing conclusions.</p>");
+  }
+
+  P.push("<p><span class='flag'>Caveats</span>This is reanalysis data — a modelled average over a grid box, not a weather station at this point. The box is roughly 9 km across where ERA5-Land covers the location and considerably coarser elsewhere, so the resolution behind these numbers varies with where you put the pin. Temperature and wind hold up well at either scale; daily rainfall totals and genuinely local effects such as fog, cold-air pooling, valley shading or coastal microclimate get smoothed away. Twelve months plus a ten-year normal describes climate. It says nothing about flood risk, fire risk, or the specific ground you're standing on, and those need separate work.</p>");
+
+  document.getElementById("read").innerHTML = P.join("");
+}
+
+/* ══════════════════════════════════════════ CSV fallback ══ */
+function parseCSV(text){
+  const lines = text.split(/\r?\n/).filter(l=>l.trim());
+  const hIdx = lines.findIndex(l => l.includes("temperature_2m_max"));
+  if(hIdx<0) throw new Error("No temperature_2m_max column found.");
+  const head = lines[hIdx].split(",").map(h=>h.trim().replace(/\s*\(.*\)$/,""));
+  const col = n => head.indexOf(n);
+  const ci = {
+    date: head.findIndex(h=>h==="time"||h==="date"),
+    tmax: col("temperature_2m_max"), tmin: col("temperature_2m_min"),
+    tmean: col("temperature_2m_mean"), prcp: col("precipitation_sum"),
+    rh: col("relative_humidity_2m_mean"), wmax: col("wind_speed_10m_max"),
+    gust: col("wind_gusts_10m_max"), wdir: col("wind_direction_10m_dominant")
+  };
+  const rows = [];
+  for(let i=hIdx+1;i<lines.length;i++){
+    const p = lines[i].split(",");
+    if(p.length<3) continue;
+    const date = (p[ci.date]||"").trim().slice(0,10);
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue;
+    const g = k => ci[k]>=0 ? num(parseFloat(p[ci[k]])) : null;
+    const tmax=g("tmax"), tmin=g("tmin");
+    if(tmax===null||tmin===null) continue;
+    rows.push({date:date,tmax:tmax,tmin:tmin,tmean:g("tmean") ?? (tmax+tmin)/2,
+               prcp:g("prcp") ?? 0, rh:g("rh"), wmax:g("wmax"), gust:g("gust"), wdir:g("wdir")});
+  }
+  if(rows.length<60) throw new Error("Only "+rows.length+" usable rows.");
+  return rows.sort((a,b)=>a.date<b.date?-1:1);
+}
+
+function showError(err){
+  wireTools({ pdf:false, link:false });
+  document.getElementById("status").innerHTML =
+    '<div class="errbox">' +
+      "<h3>Couldn't reach Open-Meteo</h3>" +
+      "<p>" + esc(err.message) + ". This usually means the page is running somewhere that blocks outside requests. " +
+      "Save this file and open it directly in your browser and it will work.</p>" +
+      '<p>Or drop in the daily CSV from the download script — the charts will build from that instead.</p>' +
+      '<div class="drop" id="drop">Drop the daily CSV here, or click to choose a file</div>' +
+      '<input type="file" id="file" accept=".csv,text/csv" hidden>' +
+    "</div>";
+
+  const drop = document.getElementById("drop"), file = document.getElementById("file");
+  const take = f => {
+    const rd = new FileReader();
+    rd.onload = () => {
+      try { render({days:parseCSV(rd.result), normals:null, elevation:null}); }
+      catch(e2){ drop.textContent = "That file didn't parse: " + e2.message; }
+    };
+    rd.readAsText(f);
+  };
+  drop.onclick = () => file.click();
+  file.onchange = () => file.files[0] && take(file.files[0]);
+  ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e2 => { e2.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e2 => { e2.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e2 => { const f = e2.dataTransfer.files[0]; if(f) take(f); });
+}
+
+/* ══════════════════════════════════════════ coordinates ══ */
+/* Accepts decimal ("40.098, -8.7724"), DMS ("40°05'52.45\"N 8°46'18.01\"W"),
+   and the loose spacing people get when pasting out of a map app. */
+function parseCoord(raw){
+  if(!raw) return null;
+  const s = String(raw).trim()
+    .replace(/[\u2032\u2019\u02BC']/g, "'")
+    .replace(/[\u2033\u201D\u201C"]/g, '"')
+    .replace(/[\u2212\u2013\u2014]/g, "-");
+
+  /* DMS first — it's only DMS if a hemisphere letter is attached */
+  const dms = /(\d+(?:\.\d+)?)\s*(?:°|d|\s)\s*(?:(\d+(?:\.\d+)?)\s*(?:'|m|\s)\s*)?(?:(\d+(?:\.\d+)?)\s*(?:"|s)?\s*)?([NSEW])/gi;
+  const pts = [];
+  let m;
+  while((m = dms.exec(s)) !== null){
+    let v = parseFloat(m[1]) + (parseFloat(m[2])||0)/60 + (parseFloat(m[3])||0)/3600;
+    const h = m[4].toUpperCase();
+    if(h === "S" || h === "W") v = -v;
+    pts.push({ v:v, h:h });
+  }
+  if(pts.length >= 2){
+    const la = pts.find(p => p.h==="N" || p.h==="S");
+    const lo = pts.find(p => p.h==="E" || p.h==="W");
+    if(la && lo) return validCoord(la.v, lo.v);
+    return validCoord(pts[0].v, pts[1].v);
+  }
+
+  /* plain decimal pair */
+  const nums = s.match(/-?\d+(?:\.\d+)?/g);
+  if(nums && nums.length >= 2) return validCoord(parseFloat(nums[0]), parseFloat(nums[1]));
+  return null;
+}
+function validCoord(lat, lon){
+  if(!isFinite(lat) || !isFinite(lon)) return null;
+  if(Math.abs(lat) > 90 || Math.abs(lon) > 180) return null;
+  return { lat:lat, lon:lon };
+}
+function fmtCoord(lat, lon){
+  return Math.abs(lat).toFixed(4) + "°" + (lat<0?"S":"N") + "\u2003" +
+         Math.abs(lon).toFixed(4) + "°" + (lon<0?"W":"E");
+}
+
+/* ---------- the URL fragment is the save file ---------- */
+function readHash(){
+  const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const c = validCoord(parseFloat(h.get("lat")), parseFloat(h.get("lon")));
+  if(!c) return null;
+  return { lat:c.lat, lon:c.lon, name:(h.get("name") || "").trim() || "Unnamed site" };
+}
+function writeHash(site){
+  const h = new URLSearchParams({ lat:site.lat.toFixed(5), lon:site.lon.toFixed(5), name:site.name });
+  history.replaceState(null, "", "#" + h.toString());
+}
+
+/* ══════════════════════════════════════════ setup screen ══ */
+/* The Leaflet map outlives any single visit to the setup screen — re-initialising
+   it on a container Leaflet has already claimed throws, which is what broke
+   the picker the second time round. */
+let MAP = null, MARKER = null;
+
+function showSetup(prefill){
+  document.getElementById("status").hidden = true;
+  document.getElementById("page").hidden = true;
+  const tools = document.getElementById("tools");
+  if(tools) tools.style.display = "none";
+  const setup = document.getElementById("setup");
+  setup.hidden = false;
+
+  const nameEl = document.getElementById("f-name");
+  const coordEl = document.getElementById("f-coord");
+  const hint = document.getElementById("coord-hint");
+  const go = document.getElementById("go");
+  let picked = null;
+
+  if(prefill){
+    nameEl.value = prefill.name === "Unnamed site" ? "" : prefill.name;
+    coordEl.value = prefill.lat.toFixed(5) + ", " + prefill.lon.toFixed(5);
+  }
+
+  function validate(){
+    const c = parseCoord(coordEl.value);
+    if(!coordEl.value.trim()){
+      hint.className = "hint";
+      hint.textContent = "Decimal or degrees–minutes–seconds both work. Paste straight from Google Maps.";
+      picked = null;
+    } else if(c){
+      hint.className = "hint ok";
+      hint.textContent = "Reads as " + fmtCoord(c.lat, c.lon);
+      picked = c;
+    } else {
+      hint.className = "hint bad";
+      hint.textContent = "Can't read that as a coordinate pair.";
+      picked = null;
+    }
+    go.disabled = !picked;
+    if(picked && MARKER && MAP){
+      MARKER.setLatLng([picked.lat, picked.lon]);
+      MAP.setView([picked.lat, picked.lon], Math.max(MAP.getZoom(), 13));
+    }
+    return picked;
+  }
+  coordEl.oninput = validate;
+  validate();
+
+  function setCoord(lat, lon, alsoName){
+    coordEl.value = lat.toFixed(5) + ", " + lon.toFixed(5);
+    if(alsoName && !nameEl.value.trim()) nameEl.value = alsoName;
+    validate();
+  }
+
+  document.querySelectorAll(".preset").forEach(b => {
+    b.onclick = () => {
+      nameEl.value = b.dataset.name;
+      setCoord(parseFloat(b.dataset.lat), parseFloat(b.dataset.lon));
+    };
+  });
+
+  go.onclick = () => {
+    const c = validate();
+    if(!c) return;
+    SITE = { lat:c.lat, lon:c.lon, name:nameEl.value.trim() || "Unnamed site" };
+    writeHash(SITE);
+    setup.hidden = true;
+    start();
+  };
+  coordEl.onkeydown = ev => { if(ev.key === "Enter" && picked) go.click(); };
+  nameEl.onkeydown  = ev => { if(ev.key === "Enter" && picked) go.click(); };
+
+  /* ---------- lazy map ---------- */
+  const mapbtn = document.getElementById("mapbtn");
+  const wrap = document.getElementById("mapwrap");
+  const mapHint = document.getElementById("map-hint");
+
+  /* the panel may already be open from a previous visit — match the label to reality */
+  mapbtn.textContent = wrap.classList.contains("on") ? "Hide map" : "Pick on a map";
+  if(MAP) setTimeout(() => MAP.invalidateSize(), 60);
+
+  mapbtn.onclick = () => {
+    if(wrap.classList.contains("on")){
+      wrap.classList.remove("on");
+      mapbtn.textContent = "Pick on a map";
+      return;
+    }
+    wrap.classList.add("on");
+    mapbtn.textContent = "Hide map";
+    if(MAP){ setTimeout(() => MAP.invalidateSize(), 60); return; }
+
+    mapHint.className = "hint";
+    mapHint.textContent = "Loading the map…";
+    loadLeaflet().then(() => {
+      const at = picked || { lat:40.098, lon:-8.7724 };
+      MAP = L.map("map").setView([at.lat, at.lon], picked ? 14 : 9);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+        attribution: "© OpenStreetMap contributors"
+      }).addTo(MAP);
+      MARKER = L.marker([at.lat, at.lon], { draggable:true }).addTo(MAP);
+      MARKER.on("dragend", () => {
+        const p = MARKER.getLatLng();
+        setCoord(p.lat, p.lng);
+      });
+      MAP.on("click", ev => {
+        MARKER.setLatLng(ev.latlng);
+        setCoord(ev.latlng.lat, ev.latlng.lng);
+      });
+      mapHint.textContent = "Click anywhere to drop the pin, or drag it.";
+      setTimeout(() => MAP.invalidateSize(), 60);
+    }).catch(() => {
+      mapHint.className = "hint bad";
+      mapHint.textContent = "The map library wouldn't load — no internet, or it's blocked here. Type the coordinates instead.";
+    });
+  };
+
+  /* ---------- place-name search (OpenStreetMap Nominatim) ---------- */
+  const searchBtn = document.getElementById("searchbtn");
+  const searchEl = document.getElementById("f-search");
+  async function doSearch(){
+    const q = searchEl.value.trim();
+    if(!q) return;
+    mapHint.className = "hint";
+    mapHint.textContent = "Searching…";
+    try{
+      const r = await fetch("https://nominatim.openstreetmap.org/search?format=json&limit=1&q=" + encodeURIComponent(q));
+      const j = await r.json();
+      if(!j.length){
+        mapHint.className = "hint bad";
+        mapHint.textContent = "Nothing found for that. Try a nearby town, or type coordinates directly.";
+        return;
+      }
+      const hit = j[0];
+      setCoord(parseFloat(hit.lat), parseFloat(hit.lon), (hit.display_name || "").split(",")[0]);
+      mapHint.className = "hint ok";
+      mapHint.textContent = hit.display_name;
+    }catch(err){
+      mapHint.className = "hint bad";
+      mapHint.textContent = "Search unavailable. Click the map or type coordinates instead.";
+    }
+  }
+  searchBtn.onclick = doSearch;
+  searchEl.onkeydown = ev => { if(ev.key === "Enter"){ ev.preventDefault(); doSearch(); } };
+}
+
+function loadLeaflet(){
+  if(window.L) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const css = document.createElement("link");
+    css.rel = "stylesheet";
+    css.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+    document.head.appendChild(css);
+    const js = document.createElement("script");
+    js.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+    js.onload = resolve;
+    js.onerror = reject;
+    document.head.appendChild(js);
+    setTimeout(() => { if(!window.L) reject(new Error("timeout")); }, 12000);
+  });
+}
+
+/* ══════════════════════════════════════════ toolbar ══ */
+function wireTools(opts){
+  const tools = document.getElementById("tools");
+  if(!tools) return;
+  tools.style.display = "";
+
+  const pdf = document.getElementById("pdf");
+  if(pdf){
+    pdf.style.display = opts && opts.pdf === false ? "none" : "";
+    pdf.onclick = () => window.print();
+  }
+  const rel = document.getElementById("relocate");
+  if(rel) rel.onclick = () => showSetup(SITE);
+
+  const copy = document.getElementById("copylink");
+  if(copy){
+    copy.style.display = opts && opts.link === false ? "none" : "";
+    copy.onclick = async () => {
+      const before = copy.textContent;
+      try{
+        await navigator.clipboard.writeText(location.href);
+        copy.textContent = "Copied";
+      }catch(err){
+        copy.textContent = "Copy from bar";
+      }
+      setTimeout(() => { copy.textContent = before; }, 1800);
+    };
+  }
+}
+
+/* ══════════════════════════════════════════ render ══ */
+function render(data){
+  const days = data.days, months = byMonth(days), normals = data.normals;
+
+  const fmtD = s => new Date(s+"T00:00:00").toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+  document.title = SITE.name + " — a year of weather";
+  document.getElementById("hd-name").textContent = SITE.name;
+  document.getElementById("hd-coords").textContent = fmtCoord(SITE.lat, SITE.lon);
+  document.getElementById("hd-range").textContent = fmtD(days[0].date) + " → " + fmtD(days[days.length-1].date);
+  document.getElementById("hd-elev").textContent  =
+    data.elevation!==null && data.elevation!==undefined ? Math.round(data.elevation)+" m elevation" : "";
+  document.getElementById("ft-model").textContent =
+    "Modelled reanalysis, not a station reading" +
+    (data.timezone ? " · local time " + data.timezone : "");
+  document.getElementById("ft-gen").textContent =
+    "Generated " + new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"}) +
+    (normals ? " · normals from the last "+NORMAL_YEARS+" full years" : " · no normals loaded");
+
+  drawContours();
+  const S = drawStats(days, months, normals);
+  drawRibbon(days, months);
+  drawTemp(months, normals);
+  drawRain(months, normals);
+  drawHum(months);
+  drawDays(months);
+  drawWind(months, normals);
+  drawRose(days);
+  writeRead(days, months, S, normals);
+
+  document.getElementById("status").hidden = true;
+  document.getElementById("page").hidden = false;
+  wireTools();
+}
+
+/* ══════════════════════════════════════════ entry ══ */
+function start(){
+  document.getElementById("setup").hidden = true;
+  document.getElementById("page").hidden = true;
+  const st = document.getElementById("status");
+  st.hidden = false;
+  st.innerHTML = '<div class="msg">Sounding the last twelve months at ' + esc(SITE.name) + '…</div>' +
+                 '<div class="sub"><span class="sounding"></span><span class="sounding"></span><span class="sounding"></span></div>';
+  loadData().then(render).catch(showError);
+}
+
+const fromLink = readHash();
+if(fromLink){
+  SITE = fromLink;
+  start();
+} else {
+  showSetup(null);
+}
+
+})();
+</script>
+</body>
+</html>
